@@ -45,10 +45,10 @@
 
             if(mysqli_query($db,$reg_query)){
                 echo "Registered";
-                $uid_query = "SELECT * FROM users WHERE uname='$username'";
+                $uid_query = "SELECT uid,isadmin FROM users WHERE uname='$username'";
                 $_SESSION['user'] = mysqli_fetch_assoc(mysqli_query($db,$uid_query));
-                print_r($_SESSION);
-                session_destroy();
+                $_SESSION['message'] = "Registered!";
+                header('Location: index.php');
             }
             else{
                 echo "Error: ".$query."<br>".mysqli_error($db);
@@ -72,6 +72,7 @@
             <label for="pass2">Repeat Password: </label><br>
             <input type="password" id="pass2" name="pass2"><?php echo $err['pass2']?><br>
             <input type="submit" name="reg" value="Register">
+            <a href="login.php">Login Instead</a>
         </form>
     </body>
 </html>
