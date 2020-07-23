@@ -1,9 +1,19 @@
 <?php
     session_start();
+    
+    if(isset($_SESSION['message'])){
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    }
 
     $db = mysqli_connect('localhost','smlprj','','smlprj');
     if(!$db){
         die('Could not connect to database: '.mysqli_connect_error());
+    }
+
+    if(isset($_SESSION['user'])){
+        $_SESSION['message'] = "Already Logged in";
+        header('Location: index.php');
     }
 
     $err = array();
@@ -24,9 +34,10 @@
         }
         if($e==0){            
             $login_query = "SELECT uid,isadmin FROM users WHERE uname='$username'";
-            $_SESSION['user'] = mysqli_fetch_assoc(mysqli_query($db,$uid_query));
-            $_SESSION['message'] = "Login Successful!";
-            header('Location: index.php');
+            if($_SESSION['user'] = mysqli_fetch_assoc(mysqli_query($db,$login_query))){
+                $_SESSION['message'] = "Login Successful!";
+                header('Location: index.php');
+            }
         }
     }
 ?>

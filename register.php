@@ -1,9 +1,19 @@
 <?php
     session_start();
+    
+    if(isset($_SESSION['message'])){
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    }
 
     $db = mysqli_connect('localhost','smlprj','','smlprj');
     if(!$db){
         die('Could not connect to database: '.mysqli_connect_error());
+    }
+
+    if(isset($_SESSION['user'])){
+        $_SESSION['message'] = "Already Logged in";
+        header('Location: index.php');
     }
 
     $err = array();
